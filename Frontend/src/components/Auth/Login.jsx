@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
+import { Mail, Lock, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 import './Auth.css';
 
@@ -117,8 +117,14 @@ const Login = () => {
                 </div>
 
                 <div className="auth-footer">
-                    Don't have an account?
-                    <Link to="/signup" className="auth-link">Sign Up</Link>
+                    <span>
+                        Don't have an account?
+                        <Link to="/signup" className="auth-link">Sign Up</Link>
+                    </span>
+                    <Link to="/" className="auth-back-home">
+                        <ArrowLeft size={14} />
+                        <span>Back to Home</span>
+                    </Link>
                 </div>
             </div>
         </div>

@@ -24,7 +24,7 @@
     background: var(--dark-bg-secondary);
     border: 1px solid var(--dark-border);
     border-radius: var(--radius-2xl);
-    padding: var(--space-10);
+    padding: var(--space-8);
     position: relative;
     z-index: 1;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
@@ -32,7 +32,7 @@
 
 .auth-header {
     text-align: center;
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-6);
 }
 
 .auth-logo {
@@ -40,7 +40,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--space-3);
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-4);
     text-decoration: none;
 }
 
@@ -67,14 +67,14 @@
 }
 
 .auth-subtitle {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-sm);
     color: var(--dark-text-muted);
 }
 
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+    gap: var(--space-4);
 }
 
 /* ==========================================
@@ -82,7 +82,7 @@
    ========================================== */
 .form-group {
     position: relative;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-4);
     display: flex;
     flex-direction: column;
 }
@@ -167,8 +167,8 @@ input:-webkit-autofill:focus {
 }
 
 .auth-submit {
-    margin-top: var(--space-2);
-    height: 54px;
+    margin-top: var(--space-1);
+    height: 50px;
     font-weight: var(--font-weight-bold);
     font-size: var(--font-size-base);
     letter-spacing: 0.01em;
@@ -208,7 +208,7 @@ input:-webkit-autofill:focus {
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    margin: var(--space-8) 0;
+    margin: var(--space-6) 0;
     color: var(--dark-text-muted);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-bold);
@@ -236,7 +236,7 @@ input:-webkit-autofill:focus {
     justify-content: center;
     gap: var(--space-3);
     padding: var(--space-3);
-    height: 50px;
+    height: 46px;
     background: var(--dark-bg-tertiary);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-lg);
@@ -267,9 +267,28 @@ input:-webkit-autofill:focus {
 
 .auth-footer {
     text-align: center;
-    margin-top: var(--space-8);
+    margin-top: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
     font-size: var(--font-size-sm);
     color: var(--dark-text-muted);
+}
+
+.auth-back-home {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    color: var(--dark-text-muted);
+    text-decoration: none;
+    font-size: var(--font-size-xs);
+    transition: color 0.2s ease;
+    margin-top: var(--space-2);
+}
+
+.auth-back-home:hover {
+    color: var(--primary-400);
 }
 
 .auth-link {
