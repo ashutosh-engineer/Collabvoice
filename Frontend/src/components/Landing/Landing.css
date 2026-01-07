@@ -92,7 +92,16 @@
     display: flex;
     align-items: center;
     gap: var(--space-3);
-    margin-left: var(--space-8);
+}
+
+.nav__link--sign-in {
+    margin-left: var(--space-4);
+}
+
+@media (max-width: 1024px) {
+    .nav__link--sign-in {
+        margin-left: 0;
+    }
 }
 
 .nav__cta {
@@ -1283,8 +1292,8 @@
 
 @media (max-width: 640px) {
     .footer__links {
-        grid-template-columns: repeat(3, 1fr);
-        gap: var(--space-4);
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6);
         text-align: left;
     }
 

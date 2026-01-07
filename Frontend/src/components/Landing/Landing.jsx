@@ -181,9 +181,9 @@ const Landing = () => {
                 {link.name}
               </a>
             ))}
+            <a href="#" className="nav__link nav__link--sign-in" onClick={() => setIsMobileMenuOpen(false)}>Sign In</a>
             <div className="nav__actions">
-              <a href="#" className="nav__cta nav__cta--secondary">Sign In</a>
-              <a href="#" className="nav__cta nav__cta--primary">Get Started Free</a>
+              <a href="#" className="nav__cta nav__cta--primary">Sign Up</a>
             </div>
           </div>
 
@@ -375,15 +375,7 @@ const Landing = () => {
             </div>
 
             <div className="footer__links">
-              <div className="footer__column">
-                <h4 className="footer__column-title">Product</h4>
-                <ul className="footer__list">
-                  <li><a href="#features">Features</a></li>
-                  <li><a href="#">Pricing</a></li>
-                  <li><a href="#">Changelog</a></li>
-                  <li><a href="#">Roadmap</a></li>
-                </ul>
-              </div>
+
               <div className="footer__column">
                 <h4 className="footer__column-title">Resources</h4>
                 <ul className="footer__list">
