@@ -398,253 +398,285 @@
 /* ==========================================
    Editor Preview (Hero Visual)
    ========================================== */
-.editor-preview {
-    background: var(--dark-bg-secondary);
-    border: 1px solid var(--dark-border-light);
-    border-radius: var(--radius-2xl);
-    overflow: hidden;
-    box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.05),
-        0 25px 50px -12px rgba(0, 0, 0, 0.5),
-        0 0 100px rgba(231, 76, 60, 0.1);
-    transform: rotateY(-5deg) rotateX(5deg);
-    transition: transform var(--transition-slow);
-}
-
-.editor-preview:hover {
-    transform: rotateY(0) rotateX(0);
-}
-
-.editor-preview__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-3) var(--space-4);
-    background: var(--dark-bg-tertiary);
-    border-bottom: 1px solid var(--dark-border);
-}
-
-.editor-preview__dots {
-    display: flex;
-    gap: var(--space-2);
-}
-
-.dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-}
-
-.dot--red {
-    background: #ff5f56;
-}
-
-.dot--yellow {
-    background: #ffbd2e;
-}
-
-.dot--green {
-    background: #27ca40;
-}
-
-.editor-preview__title {
-    font-family: var(--font-family-mono);
-    font-size: var(--font-size-sm);
-    color: var(--dark-text-secondary);
-}
-
-.editor-preview__users {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-}
-
-.avatar-stack {
-    display: flex;
-}
-
-.avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
-    color: white;
-    border: 2px solid var(--dark-bg-tertiary);
-    margin-left: -8px;
-}
-
-.avatar:first-child {
-    margin-left: 0;
-}
-
-.live-indicator {
-    display: flex;
-    align-items: center;
-    gap: var(--space-1);
-    font-size: var(--font-size-xs);
-    color: var(--success);
-    font-weight: var(--font-weight-medium);
-}
-
-.live-dot {
-    width: 8px;
-    height: 8px;
-    background: var(--success);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-.editor-preview__body {
-    display: grid;
-    grid-template-columns: 50px 1fr 200px;
-    min-height: 350px;
-}
-
-.editor-preview__sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-4) var(--space-2);
-    background: var(--dark-bg-tertiary);
-    border-right: 1px solid var(--dark-border);
-}
-
-.sidebar-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    font-size: var(--font-size-lg);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    opacity: 0.6;
-}
-
-.sidebar-icon:hover,
-.sidebar-icon.active {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.editor-preview__code {
-    padding: var(--space-4);
+/* ==========================================
+   Solar System Visualization (Hero Visual)
+   ========================================== */
+.solar-system {
     position: relative;
-    font-family: var(--font-family-mono);
-}
-
-.code-block {
-    margin: 0;
-    font-size: var(--font-size-sm);
-    color: var(--dark-text-secondary);
-    line-height: 1.8;
-    white-space: pre-wrap;
-}
-
-.cursor {
-    color: var(--primary-500);
-    animation: blink 1s step-end infinite;
-}
-
-.ai-suggestion {
-    position: absolute;
-    bottom: var(--space-4);
-    left: var(--space-4);
-    right: var(--space-4);
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-3);
-    background: rgba(124, 58, 237, 0.1);
-    border: 1px solid rgba(124, 58, 237, 0.2);
-    border-radius: var(--radius-lg);
-    font-size: var(--font-size-xs);
-    color: var(--secondary-400);
-}
-
-.ai-suggestion__icon {
-    font-size: var(--font-size-base);
-}
-
-.editor-preview__panel {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-3);
-    background: var(--dark-bg-tertiary);
-    border-left: 1px solid var(--dark-border);
-}
-
-.video-preview {
-    background: var(--dark-bg-elevated);
-    border-radius: var(--radius-lg);
-    padding: var(--space-6);
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 600px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    perspective: 1200px;
+    transform-style: preserve-3d;
 }
 
-.video-placeholder {
+.solar-system__title {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.solar-system__core {
+    position: relative;
+    z-index: 5;
+    transform-style: preserve-3d;
+}
+
+.solar-system__sun {
+    width: 100px;
+    height: 100px;
+    background: var(--dark-bg-tertiary);
+    border: 2px solid var(--primary-500);
+    border-radius: 50%;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: var(--space-2);
-    color: var(--dark-text-muted);
-    font-size: var(--font-size-sm);
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 0 50px rgba(231, 76, 60, 0.4);
+    animation: pulse 4s ease-in-out infinite;
 }
 
-.video-placeholder span:first-child {
-    font-size: var(--font-size-2xl);
+.solar-system__sun-icon {
+    font-size: 3rem;
+    z-index: 2;
 }
 
-.chat-preview {
-    flex: 1;
-    background: var(--dark-bg-elevated);
-    border-radius: var(--radius-lg);
-    padding: var(--space-3);
+.solar-system__sun-glow {
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(circle, rgba(231, 76, 60, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(10px);
+}
+
+/* Orbits */
+.orbit {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    transform-style: preserve-3d;
+}
+
+.orbit--1 {
+    width: 220px;
+    height: 180px;
+    animation: orbitRotate 15s linear infinite;
+}
+
+.orbit--2 {
+    width: 320px;
+    height: 260px;
+    animation: orbitRotate 25s linear infinite reverse;
+}
+
+.orbit--3 {
+    width: 420px;
+    height: 340px;
+    animation: orbitRotate 35s linear infinite;
+}
+
+.orbit--4 {
+    width: 520px;
+    height: 420px;
+    animation: orbitRotate 45s linear infinite reverse;
+}
+
+.orbit--5 {
+    width: 620px;
+    height: 500px;
+    animation: orbitRotate 55s linear infinite;
+}
+
+.orbit--6 {
+    width: 720px;
+    height: 580px;
+    animation: orbitRotate 65s linear infinite reverse;
+}
+
+.planet {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: var(--dark-bg-tertiary);
+    border: 1px solid var(--dark-border-light);
+    border-radius: 50%;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    animation: planetCounterRotate var(--animation-speed) linear infinite;
 }
 
-.chat-message {
-    font-size: var(--font-size-xs);
-    color: var(--dark-text-secondary);
-    padding: var(--space-2);
-    background: rgba(255, 255, 255, 0.03);
+.orbit--1 .planet {
+    --animation-speed: 15s;
+}
+
+.orbit--2 .planet {
+    --animation-speed: 25s;
+    top: 0;
+    left: 50%;
+    animation-direction: reverse;
+}
+
+.orbit--3 .planet {
+    --animation-speed: 35s;
+    top: 100%;
+    left: 50%;
+}
+
+.orbit--4 .planet {
+    --animation-speed: 45s;
+    top: 50%;
+    left: 0;
+    animation-direction: reverse;
+}
+
+.orbit--5 .planet {
+    --animation-speed: 55s;
+    top: 20%;
+    left: 10%;
+}
+
+.orbit--6 .planet {
+    --animation-speed: 65s;
+    top: 80%;
+    left: 90%;
+    animation-direction: reverse;
+}
+
+.planet:hover {
+    border-color: var(--primary-400);
+    box-shadow: 0 0 20px var(--primary-500);
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 20;
+}
+
+.planet__icon {
+    font-size: 1.5rem;
+}
+
+.planet__tooltip {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--dark-bg-tertiary);
+    border: 1px solid var(--dark-border);
+    padding: var(--space-2) var(--space-4);
     border-radius: var(--radius-md);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
+    white-space: nowrap;
+    pointer-events: none;
 }
 
-.chat-user {
-    color: var(--primary-400);
-    font-weight: var(--font-weight-medium);
-    margin-right: var(--space-1);
+.planet:hover .planet__tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }
 
-@media (max-width: 768px) {
-    .editor-preview {
-        transform: none;
+.planet__tooltip-title {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--dark-text-primary);
+}
+
+@keyframes orbitRotate {
+    from {
+        transform: rotateX(60deg) rotateZ(0deg);
     }
 
-    .editor-preview__body {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
-    }
-
-    .editor-preview__sidebar,
-    .editor-preview__panel {
-        display: none;
-    }
-
-    .editor-preview__code {
-        min-height: 200px;
+    to {
+        transform: rotateX(60deg) rotateZ(360deg);
     }
 }
+
+@keyframes planetCounterRotate {
+    from {
+        transform: translate(-50%, -50%) rotateZ(0deg) rotateX(-60deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotateZ(-360deg) rotateX(-60deg);
+    }
+}
+
+@media (max-width: 1024px) {
+    .solar-system {
+        max-width: 400px;
+        margin-top: var(--space-12);
+    }
+
+    .solar-system__sun {
+        width: 80px;
+        height: 80px;
+    }
+
+    .orbit--1 {
+        width: 140px;
+        height: 110px;
+    }
+
+    .orbit--2 {
+        width: 200px;
+        height: 160px;
+    }
+
+    .orbit--3 {
+        width: 260px;
+        height: 210px;
+    }
+
+    .orbit--4 {
+        width: 320px;
+        height: 260px;
+    }
+
+    .orbit--5 {
+        width: 380px;
+        height: 310px;
+    }
+
+    .orbit--6 {
+        width: 440px;
+        height: 360px;
+    }
+}
+
+@media (max-width: 640px) {
+    .solar-system {
+        max-width: 300px;
+    }
+
+    .solar-system__title {
+        font-size: var(--font-size-lg);
+    }
+
+    .planet {
+        width: 40px;
+        height: 40px;
+    }
+}
+
 
 /* ==========================================
    Buttons
@@ -976,231 +1008,9 @@
     }
 }
 
-/* ==========================================
-   Use Cases Section
-   ========================================== */
-.use-cases {
-    padding: var(--space-32) 0;
-    background: var(--dark-bg-secondary);
-    position: relative;
-}
 
-.use-cases::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--dark-border-light), transparent);
-}
 
-.use-cases__container {
-    max-width: var(--container-xl);
-    margin: 0 auto;
-    padding: 0 var(--space-6);
-}
 
-.use-cases__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-6);
-}
-
-.use-case-card {
-    padding: var(--space-6);
-    background: var(--dark-bg-tertiary);
-    border: 1px solid var(--dark-border);
-    border-radius: var(--radius-xl);
-    transition: all var(--transition-base);
-}
-
-.use-case-card:hover {
-    border-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-3px);
-}
-
-.use-case-card__icon {
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-lg);
-    font-size: var(--font-size-xl);
-    margin-bottom: var(--space-4);
-}
-
-.use-case-card__icon.gradient-primary {
-    background: linear-gradient(135deg, rgba(231, 76, 60, 0.2), rgba(231, 76, 60, 0.05));
-}
-
-.use-case-card__icon.gradient-secondary {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(124, 58, 237, 0.05));
-}
-
-.use-case-card__icon.gradient-accent {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05));
-}
-
-.use-case-card__title {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    margin-bottom: var(--space-2);
-}
-
-.use-case-card__description {
-    font-size: var(--font-size-base);
-    color: var(--dark-text-secondary);
-    line-height: var(--line-height-relaxed);
-}
-
-@media (max-width: 1024px) {
-    .use-cases__grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 640px) {
-    .use-cases__grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ==========================================
-   Tech Stack Section
-   ========================================== */
-.tech-stack {
-    padding: var(--space-32) 0;
-}
-
-.tech-stack__container {
-    max-width: var(--container-xl);
-    margin: 0 auto;
-    padding: 0 var(--space-6);
-}
-
-.tech-stack__grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-4);
-    margin-bottom: var(--space-16);
-}
-
-.tech-card {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-5);
-    background: var(--dark-bg-secondary);
-    border: 1px solid var(--dark-border);
-    border-radius: var(--radius-full);
-    transition: all var(--transition-fast);
-}
-
-.tech-card:hover {
-    border-color: var(--primary-500);
-    background: rgba(231, 76, 60, 0.05);
-    transform: translateY(-2px);
-}
-
-.tech-card__icon {
-    font-size: var(--font-size-xl);
-}
-
-.tech-card__name {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-}
-
-.tech-card__category {
-    font-size: var(--font-size-xs);
-    color: var(--dark-text-muted);
-    padding: var(--space-1) var(--space-2);
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--radius-sm);
-}
-
-.tech-stack__architecture {
-    background: var(--dark-bg-secondary);
-    border: 1px solid var(--dark-border);
-    border-radius: var(--radius-2xl);
-    padding: var(--space-8);
-}
-
-.architecture-visual {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-}
-
-.arch-layer {
-    display: flex;
-    align-items: center;
-    gap: var(--space-6);
-    padding: var(--space-5);
-    background: var(--dark-bg-tertiary);
-    border-radius: var(--radius-xl);
-    border: 1px solid var(--dark-border);
-}
-
-.arch-layer--frontend {
-    border-color: rgba(231, 76, 60, 0.3);
-}
-
-.arch-layer--backend {
-    border-color: rgba(124, 58, 237, 0.3);
-}
-
-.arch-layer--data {
-    border-color: rgba(59, 130, 246, 0.3);
-}
-
-.arch-layer__label {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--primary-400);
-    min-width: 100px;
-}
-
-.arch-layer--backend .arch-layer__label {
-    color: var(--secondary-400);
-}
-
-.arch-layer--data .arch-layer__label {
-    color: var(--accent-400);
-}
-
-.arch-layer__items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-}
-
-.arch-layer__items span {
-    padding: var(--space-2) var(--space-4);
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-sm);
-    color: var(--dark-text-secondary);
-}
-
-.arch-connector {
-    width: 2px;
-    height: 20px;
-    background: linear-gradient(180deg, var(--primary-500), var(--secondary-500));
-    margin: 0 auto;
-    opacity: 0.3;
-}
-
-@media (max-width: 768px) {
-    .arch-layer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-3);
-    }
-}
 
 /* ==========================================
    CTA Section

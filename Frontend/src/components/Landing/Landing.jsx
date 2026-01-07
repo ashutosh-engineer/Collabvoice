@@ -55,8 +55,6 @@ const Landing = () => {
   const navLinks = [
     { name: 'Features', href: '#features' },
     { name: 'How It Works', href: '#how-it-works' },
-    { name: 'Use Cases', href: '#use-cases' },
-    { name: 'Tech Stack', href: '#tech-stack' },
   ];
 
   const features = [
@@ -160,27 +158,7 @@ const Landing = () => {
     }
   ];
 
-  const techStack = [
-    { name: 'React', icon: '⚛️', category: 'Frontend' },
-    { name: 'Vite', icon: '⚡', category: 'Frontend' },
-    { name: 'Monaco Editor', icon: '📝', category: 'Frontend' },
-    { name: 'WebRTC', icon: '📡', category: 'Frontend' },
-    { name: 'Python', icon: '🐍', category: 'Backend' },
-    { name: 'Flask', icon: '🌶️', category: 'Backend' },
-    { name: 'TensorFlow', icon: '🧠', category: 'ML' },
-    { name: 'PostgreSQL', icon: '🐘', category: 'Data' },
-    { name: 'Redis', icon: '🔴', category: 'Data' },
-    { name: 'Docker', icon: '🐳', category: 'DevOps' },
-    { name: 'Socket.IO', icon: '🔌', category: 'Realtime' },
-    { name: 'Git', icon: '📦', category: 'VCS' },
-  ];
 
-  const stats = [
-    { value: '100+', label: 'Languages Supported' },
-    { value: '< 50ms', label: 'Sync Latency' },
-    { value: '99.9%', label: 'Uptime SLA' },
-    { value: '∞', label: 'Collaborators' },
-  ];
 
   return (
     <div className="landing">
@@ -235,10 +213,6 @@ const Landing = () => {
 
         <div className="hero__container">
           <div className="hero__content">
-            <div className="hero__badge animate-fade-in-down">
-              <span className="hero__badge-icon">🚀</span>
-              <span>Next-Generation Collaborative Coding</span>
-            </div>
 
             <h1 className="hero__title animate-fade-in-up delay-100">
               Code Together.
@@ -254,84 +228,39 @@ const Landing = () => {
               built-in version control. Revolutionize how your team writes code.
             </p>
 
-            <div className="hero__cta-group animate-fade-in-up delay-300">
-              <a href="#" className="btn btn--primary btn--lg">
+            <div className="hero__cta-group animate-fade-in-up delay-200">
+              <a href="https://github.com/ashutosh-engineer/collabvoice" className="btn btn--primary btn--lg">
                 <span>Start Coding Free</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </a>
-              <a href="#" className="btn btn--secondary btn--lg">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
-                </svg>
-                <span>Watch Demo</span>
-              </a>
-            </div>
-
-            <div className="hero__stats animate-fade-in-up delay-400">
-              {stats.map((stat, index) => (
-                <div key={index} className="hero__stat">
-                  <span className="hero__stat-value">{stat.value}</span>
-                  <span className="hero__stat-label">{stat.label}</span>
-                </div>
-              ))}
             </div>
           </div>
 
           <div className="hero__visual animate-fade-in delay-300">
-            <div className="editor-preview">
-              <div className="editor-preview__header">
-                <div className="editor-preview__dots">
-                  <span className="dot dot--red"></span>
-                  <span className="dot dot--yellow"></span>
-                  <span className="dot dot--green"></span>
-                </div>
-                <div className="editor-preview__title">collabvoice.js</div>
-                <div className="editor-preview__users">
-                  <div className="avatar-stack">
-                    <div className="avatar" style={{ background: 'var(--primary-500)' }}>A</div>
-                    <div className="avatar" style={{ background: 'var(--secondary-500)' }}>B</div>
-                    <div className="avatar" style={{ background: 'var(--accent-500)' }}>C</div>
-                  </div>
-                  <span className="live-indicator">
-                    <span className="live-dot"></span>
-                    Live
-                  </span>
+            <div className="solar-system">
+              <div className="solar-system__title">Built for Every Team</div>
+              <div className="solar-system__core">
+                <div className="solar-system__sun">
+                  <span className="solar-system__sun-icon">�</span>
+                  <div className="solar-system__sun-glow"></div>
                 </div>
               </div>
-              <div className="editor-preview__body">
-                <div className="editor-preview__sidebar">
-                  <div className="sidebar-icon active">📁</div>
-                  <div className="sidebar-icon">🔍</div>
-                  <div className="sidebar-icon">🌿</div>
-                  <div className="sidebar-icon">🤖</div>
-                  <div className="sidebar-icon">📹</div>
-                </div>
-                <div className="editor-preview__code">
-                  <pre className="code-block">
-                    <code>{typedText}<span className="cursor">|</span></code>
-                  </pre>
-                  <div className="ai-suggestion">
-                    <span className="ai-suggestion__icon">✨</span>
-                    <span className="ai-suggestion__text">AI: Consider adding error handling for async operations</span>
-                  </div>
-                </div>
-                <div className="editor-preview__panel">
-                  <div className="video-preview">
-                    <div className="video-placeholder">
-                      <span>📹</span>
-                      <span className="video-name">Team Call</span>
-                    </div>
-                  </div>
-                  <div className="chat-preview">
-                    <div className="chat-message">
-                      <span className="chat-user">Sarah:</span>
-                      <span>Looks good! 👍</span>
+
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  className={`orbit orbit--${index + 1}`}
+                >
+                  <div className="planet" style={{ '--delay': `${index * 0.5}s` }}>
+                    <div className="planet__icon">{feature.icon}</div>
+                    <div className="planet__tooltip">
+                      <span className="planet__tooltip-title">{feature.title}</span>
                     </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -346,44 +275,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="features" id="features">
-        <div className="features__container">
-          <div className="section-header">
-            <span className="section-tag">Features</span>
-            <h2 className="section-title">
-              Everything You Need to
-              <span className="text-gradient"> Code Smarter</span>
-            </h2>
-            <p className="section-subtitle">
-              A complete development ecosystem that combines collaboration, intelligence,
-              and communication in one powerful platform.
-            </p>
-          </div>
 
-          <div className="features__grid">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className={`feature-card ${activeFeature === index ? 'feature-card--active' : ''}`}
-                onMouseEnter={() => setActiveFeature(index)}
-              >
-                <div className="feature-card__icon">
-                  <span>{feature.icon}</span>
-                </div>
-                <h3 className="feature-card__title">{feature.title}</h3>
-                <p className="feature-card__description">{feature.description}</p>
-                <div className="feature-card__highlights">
-                  {feature.highlights.map((highlight, i) => (
-                    <span key={i} className="feature-card__tag">{highlight}</span>
-                  ))}
-                </div>
-                <div className="feature-card__glow"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* How It Works Section */}
       <section className="how-it-works" id="how-it-works">
@@ -419,61 +311,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Use Cases Section */}
-      <section className="use-cases" id="use-cases">
-        <div className="use-cases__container">
-          <div className="section-header">
-            <span className="section-tag">Use Cases</span>
-            <h2 className="section-title">
-              Built for
-              <span className="text-gradient"> Every Team</span>
-            </h2>
-            <p className="section-subtitle">
-              Whether you're a startup, enterprise, or open source project,
-              CollabVoice adapts to your workflow.
-            </p>
-          </div>
 
-          <div className="use-cases__grid">
-            {useCases.map((useCase, index) => (
-              <div key={index} className="use-case-card">
-                <div className={`use-case-card__icon ${useCase.gradient}`}>
-                  <span>{useCase.icon}</span>
-                </div>
-                <h3 className="use-case-card__title">{useCase.title}</h3>
-                <p className="use-case-card__description">{useCase.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Tech Stack Section */}
-      <section className="tech-stack" id="tech-stack">
-        <div className="tech-stack__container">
-          <div className="section-header">
-            <span className="section-tag">Technology</span>
-            <h2 className="section-title">
-              Powered by
-              <span className="text-gradient"> Modern Tech</span>
-            </h2>
-            <p className="section-subtitle">
-              Built with cutting-edge technologies for performance,
-              scalability, and an exceptional developer experience.
-            </p>
-          </div>
-
-          <div className="tech-stack__grid">
-            {techStack.map((tech, index) => (
-              <div key={index} className="tech-card">
-                <span className="tech-card__icon">{tech.icon}</span>
-                <span className="tech-card__name">{tech.name}</span>
-                <span className="tech-card__category">{tech.category}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="cta-section">
