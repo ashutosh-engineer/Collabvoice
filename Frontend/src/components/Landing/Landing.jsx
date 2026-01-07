@@ -181,11 +181,10 @@ const Landing = () => {
                 {link.name}
               </a>
             ))}
-          </div>
-
-          <div className="nav__actions">
-            <a href="#" className="nav__cta nav__cta--secondary">Sign In</a>
-            <a href="#" className="nav__cta nav__cta--primary">Get Started Free</a>
+            <div className="nav__actions">
+              <a href="#" className="nav__cta nav__cta--secondary">Sign In</a>
+              <a href="#" className="nav__cta nav__cta--primary">Get Started Free</a>
+            </div>
           </div>
 
           <button
