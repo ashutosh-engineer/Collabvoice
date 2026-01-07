@@ -59,32 +59,34 @@ const Login = () => {
 
                 <form className="auth-form" onSubmit={handleLogin}>
                     <div className="form-group">
-                        <label className="form-label">Email Address</label>
-                        <div className="input-wrapper">
-                            <Mail className="input-icon" size={18} />
+                        <div className="input-container">
+                            <Mail className="input-icon" size={20} />
                             <input
                                 type="email"
+                                id="email"
                                 className="auth-input"
-                                placeholder="name@company.com"
+                                placeholder=" "
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
+                            <label htmlFor="email" className="floating-label">Email Address</label>
                         </div>
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">Password</label>
-                        <div className="input-wrapper">
-                            <Lock className="input-icon" size={18} />
+                        <div className="input-container">
+                            <Lock className="input-icon" size={20} />
                             <input
                                 type="password"
+                                id="password"
                                 className="auth-input"
-                                placeholder="••••••••"
+                                placeholder=" "
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
+                            <label htmlFor="password" className="floating-label">Password</label>
                         </div>
                     </div>
 

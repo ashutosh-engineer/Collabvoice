@@ -77,35 +77,31 @@
     gap: var(--space-5);
 }
 
+/* ==========================================
+   Form Components - Advanced Floating Labels
+   ========================================== */
 .form-group {
+    position: relative;
+    margin-bottom: var(--space-6);
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
 }
 
-.form-label {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--dark-text-secondary);
-}
-
-.input-wrapper {
+.input-container {
     position: relative;
     display: flex;
     align-items: center;
-}
-
-.input-icon {
-    position: absolute;
-    left: var(--space-4);
-    color: var(--dark-text-muted);
+    width: 100%;
 }
 
 .auth-input {
     width: 100%;
-    padding: var(--space-3.5) var(--space-4) var(--space-3.5) var(--space-12);
+    height: 56px;
+    /* Professional standard height */
+    padding: 20px 16px 4px 48px;
+    /* Extra left padding for icon, top padding for label space */
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-lg);
     color: var(--dark-text-primary);
     font-size: var(--font-size-base);
@@ -113,22 +109,101 @@
 }
 
 .auth-input:hover {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .auth-input:focus {
     outline: none;
+    background: rgba(255, 255, 255, 0.07);
     border-color: var(--primary-500);
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 0 0 1px var(--primary-500), 0 0 0 4px rgba(231, 76, 60, 0.1);
+    box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
+}
+
+/* Floating Label Logic */
+.floating-label {
+    position: absolute;
+    left: 48px;
+    /* Aligned with icon */
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dark-text-muted);
+    font-size: var(--font-size-base);
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+}
+
+/* Move label up on focus or when input is filled */
+.auth-input:focus~.floating-label,
+.auth-input:not(:placeholder-shown)~.floating-label {
+    top: 14px;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-400);
+    letter-spacing: 0.02em;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    color: var(--dark-text-muted);
+    transition: color 0.2s ease;
+    z-index: 2;
+}
+
+.auth-input:focus~.input-icon {
+    color: var(--primary-400);
+}
+
+/* Autofill Fix for Ghost Text */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--dark-text-primary);
+    -webkit-box-shadow: 0 0 0px 1000px #1a1a24 inset;
+    /* Matches your background */
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .auth-submit {
-    margin-top: var(--space-4);
-    height: 52px;
-    font-weight: var(--font-weight-semibold);
+    margin-top: var(--space-2);
+    height: 54px;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-base);
+    letter-spacing: 0.01em;
 }
 
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid rgba(231, 76, 60, 0.2);
+    color: #ff6b6b;
+    /* Higher contrast red */
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-6);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   Social Auth - Enhanced Layout
+   ========================================== */
 .auth-divider {
     display: flex;
     align-items: center;
@@ -136,9 +211,9 @@
     margin: var(--space-8) 0;
     color: var(--dark-text-muted);
     font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
 }
 
 .auth-divider::before,
@@ -161,26 +236,33 @@
     justify-content: center;
     gap: var(--space-3);
     padding: var(--space-3);
+    height: 50px;
     background: var(--dark-bg-tertiary);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-lg);
     color: var(--dark-text-primary);
     font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     cursor: pointer;
     transition: all var(--transition-base);
 }
 
 .social-btn:hover {
-    background: var(--dark-bg-elevated);
+    background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.5);
 }
 
 .social-btn svg {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+/* Specific Logo Alignments */
+.social-btn span {
+    margin-top: 1px;
 }
 
 .auth-footer {

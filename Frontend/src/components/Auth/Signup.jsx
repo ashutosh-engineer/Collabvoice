@@ -69,66 +69,70 @@ const Signup = () => {
 
                 <form className="auth-form" onSubmit={handleSignup}>
                     <div className="form-group">
-                        <label className="form-label">Username</label>
-                        <div className="input-wrapper">
-                            <User className="input-icon" size={18} />
+                        <div className="input-container">
+                            <User className="input-icon" size={20} />
                             <input
                                 type="text"
                                 name="username"
+                                id="username"
                                 className="auth-input"
-                                placeholder="johndoe"
+                                placeholder=" "
                                 value={formData.username}
                                 onChange={handleChange}
                                 required
                             />
+                            <label htmlFor="username" className="floating-label">Username</label>
                         </div>
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">Email Address</label>
-                        <div className="input-wrapper">
-                            <Mail className="input-icon" size={18} />
+                        <div className="input-container">
+                            <Mail className="input-icon" size={20} />
                             <input
                                 type="email"
                                 name="email"
+                                id="email"
                                 className="auth-input"
-                                placeholder="name@company.com"
+                                placeholder=" "
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
                             />
+                            <label htmlFor="email" className="floating-label">Email Address</label>
                         </div>
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">Password</label>
-                        <div className="input-wrapper">
-                            <Lock className="input-icon" size={18} />
+                        <div className="input-container">
+                            <Lock className="input-icon" size={20} />
                             <input
                                 type="password"
                                 name="password"
+                                id="password"
                                 className="auth-input"
-                                placeholder="••••••••"
+                                placeholder=" "
                                 value={formData.password}
                                 onChange={handleChange}
                                 required
                             />
+                            <label htmlFor="password" className="floating-label">Password</label>
                         </div>
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">Confirm Password</label>
-                        <div className="input-wrapper">
-                            <Lock className="input-icon" size={18} />
+                        <div className="input-container">
+                            <Lock className="input-icon" size={20} />
                             <input
                                 type="password"
                                 name="confirmPassword"
+                                id="confirmPassword"
                                 className="auth-input"
-                                placeholder="••••••••"
+                                placeholder=" "
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
                                 required
                             />
+                            <label htmlFor="confirmPassword" className="floating-label">Confirm Password</label>
                         </div>
                     </div>
 
