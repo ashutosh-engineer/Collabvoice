@@ -206,7 +206,7 @@ Ensure you have the following installed on your system:
 
 #### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yourusername/collabvoice.git
+git clone https://github.com/ashutosh-engineer/collabvoice.git
 cd collabvoice
 ```
 
@@ -624,13 +624,13 @@ SOFTWARE.
 - **Email**: support@collabvoice.dev
 - **Discord**: [Join our community](https://discord.gg/collabvoice)
 - **Twitter**: [@CollabVoice](https://twitter.com/collabvoice)
-- **GitHub Issues**: [Report bugs](https://github.com/yourusername/collabvoice/issues)
+- **GitHub Issues**: [Report bugs](https://github.com/ashutosh-engineer/collabvoice/issues)
 
 ---
 
 ## 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/collabvoice&type=Date)](https://star-history.com/#yourusername/collabvoice&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=ashutosh-engineer/collabvoice&type=Date)](https://star-history.com/#ashutosh-engineer/collabvoice&Date)
 
 ---
 
