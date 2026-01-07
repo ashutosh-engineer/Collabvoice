@@ -1,370 +1,582 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Landing.css';
 
+// ============================================
+// CollabVoice SaaS Landing Page Component
+// ============================================
+
 const Landing = () => {
+  const [isNavScrolled, setIsNavScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeFeature, setActiveFeature] = useState(0);
+  const [typedText, setTypedText] = useState('');
+  const heroRef = useRef(null);
+
+  // Typing animation for hero
+  const codeSnippets = [
+    'function collaborate() {',
+    '  const team = await connect();',
+    '  team.code.sync(realtime);',
+    '  ai.analyze(code);',
+    '  return success;',
+    '}'
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsNavScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    let index = 0;
+    const fullText = codeSnippets.join('\n');
+    const timer = setInterval(() => {
+      if (index <= fullText.length) {
+        setTypedText(fullText.slice(0, index));
+        index++;
+      } else {
+        index = 0;
+      }
+    }, 50);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Auto-rotate features
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveFeature((prev) => (prev + 1) % features.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const navLinks = [
+    { name: 'Features', href: '#features' },
+    { name: 'How It Works', href: '#how-it-works' },
+    { name: 'Use Cases', href: '#use-cases' },
+    { name: 'Tech Stack', href: '#tech-stack' },
+  ];
+
+  const features = [
+    {
+      icon: '🔄',
+      title: 'Real-Time Collaboration',
+      description: 'Code together with your team in real-time. See live cursor positions, instant code sync, and seamless conflict resolution.',
+      highlights: ['Live Cursor Tracking', 'Instant Sync', 'Smart Merge']
+    },
+    {
+      icon: '🤖',
+      title: 'AI-Powered Intelligence',
+      description: 'Leverage cutting-edge AI agents that understand your codebase, detect anomalies, and provide intelligent suggestions.',
+      highlights: ['Code Analysis', 'Bug Detection', 'Smart Autocomplete']
+    },
+    {
+      icon: '📹',
+      title: 'Integrated Video Communication',
+      description: 'Built-in HD video calling and screen sharing. Code review sessions and pair programming made effortless.',
+      highlights: ['HD Video Calls', 'Screen Sharing', 'Session Recording']
+    },
+    {
+      icon: '🗂️',
+      title: 'Version Control & Storage',
+      description: 'Full Git integration plus our custom VCS for quick iterations. Cloud storage keeps your projects safe and accessible.',
+      highlights: ['Git Integration', 'Cloud Storage', 'Branch Management']
+    },
+    {
+      icon: '🔍',
+      title: 'ML-Powered Analysis',
+      description: 'Machine learning algorithms continuously scan for bugs, security vulnerabilities, and performance bottlenecks.',
+      highlights: ['Security Scanning', 'Performance Prediction', 'Pattern Recognition']
+    },
+    {
+      icon: '🎨',
+      title: 'Premium Developer Experience',
+      description: 'Support for 100+ languages, customizable themes, extensions, and flexible workspace layouts.',
+      highlights: ['100+ Languages', 'Custom Themes', 'Extensions']
+    }
+  ];
+
+  const useCases = [
+    {
+      title: 'Remote Teams',
+      description: 'Bridge the distance. Code together as if you\'re in the same room with real-time sync and video communication.',
+      icon: '🌍',
+      gradient: 'gradient-primary'
+    },
+    {
+      title: 'Code Reviews',
+      description: 'Streamline code reviews with inline discussions, video walkthroughs, and AI-assisted quality checks.',
+      icon: '👁️',
+      gradient: 'gradient-secondary'
+    },
+    {
+      title: 'Pair Programming',
+      description: 'True pair programming experience with shared cursors, voice chat, and synchronized editing.',
+      icon: '👥',
+      gradient: 'gradient-accent'
+    },
+    {
+      title: 'Technical Interviews',
+      description: 'Conduct live coding interviews with video, real-time code evaluation, and recording capabilities.',
+      icon: '💼',
+      gradient: 'gradient-primary'
+    },
+    {
+      title: 'Open Source Projects',
+      description: 'Collaborate with contributors worldwide. Built-in version control makes contribution seamless.',
+      icon: '🌟',
+      gradient: 'gradient-secondary'
+    },
+    {
+      title: 'Education & Training',
+      description: 'Teach coding interactively. Share your screen, record sessions, and provide real-time feedback.',
+      icon: '📚',
+      gradient: 'gradient-accent'
+    }
+  ];
+
+  const howItWorks = [
+    {
+      step: '01',
+      title: 'Create a Session',
+      description: 'Start a new collaborative coding session in seconds. Invite your team with a simple link.'
+    },
+    {
+      step: '02',
+      title: 'Code Together',
+      description: 'Write code in real-time with your team. See live changes, cursors, and get AI-powered suggestions.'
+    },
+    {
+      step: '03',
+      title: 'Communicate',
+      description: 'Jump into video calls, share your screen, or use voice chat—all without leaving the editor.'
+    },
+    {
+      step: '04',
+      title: 'Ship It',
+      description: 'Commit your changes, manage branches, and deploy. Version control built right in.'
+    }
+  ];
+
+  const techStack = [
+    { name: 'React', icon: '⚛️', category: 'Frontend' },
+    { name: 'Vite', icon: '⚡', category: 'Frontend' },
+    { name: 'Monaco Editor', icon: '📝', category: 'Frontend' },
+    { name: 'WebRTC', icon: '📡', category: 'Frontend' },
+    { name: 'Python', icon: '🐍', category: 'Backend' },
+    { name: 'Flask', icon: '🌶️', category: 'Backend' },
+    { name: 'TensorFlow', icon: '🧠', category: 'ML' },
+    { name: 'PostgreSQL', icon: '🐘', category: 'Data' },
+    { name: 'Redis', icon: '🔴', category: 'Data' },
+    { name: 'Docker', icon: '🐳', category: 'DevOps' },
+    { name: 'Socket.IO', icon: '🔌', category: 'Realtime' },
+    { name: 'Git', icon: '📦', category: 'VCS' },
+  ];
+
+  const stats = [
+    { value: '100+', label: 'Languages Supported' },
+    { value: '< 50ms', label: 'Sync Latency' },
+    { value: '99.9%', label: 'Uptime SLA' },
+    { value: '∞', label: 'Collaborators' },
+  ];
+
   return (
     <div className="landing">
       {/* Navigation */}
-      <nav className="navbar">
-        <div className="nav-container">
-          <div className="nav-logo">
-            <img src="/logo.jpeg" alt="CollabVoice" className="logo-img" />
-            <span className="logo-text">CollabVoice</span>
+      <nav className={`nav ${isNavScrolled ? 'nav--scrolled' : ''}`}>
+        <div className="nav__container">
+          <a href="#" className="nav__logo" aria-label="CollabVoice Home">
+            <img src="/logo.jpeg" alt="CollabVoice" className="nav__logo-img" />
+            <span className="nav__logo-text">CollabVoice</span>
+          </a>
+
+          <div className={`nav__links ${isMobileMenuOpen ? 'nav__links--open' : ''}`}>
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="nav__link"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
           </div>
-          <div className="nav-links">
-            <a href="#features">Features</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#tech-stack">Tech Stack</a>
-            <a href="#team">Team</a>
+
+          <div className="nav__actions">
+            <a href="#" className="nav__cta nav__cta--secondary">Sign In</a>
+            <a href="#" className="nav__cta nav__cta--primary">Get Started Free</a>
           </div>
-          <div className="nav-actions">
-            <button className="btn btn-outline">Sign In</button>
-            <button className="btn btn-primary">Get Started</button>
-          </div>
+
+          <button
+            className="nav__mobile-toggle"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className={`hamburger ${isMobileMenuOpen ? 'hamburger--open' : ''}`}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-content">
-          <div className="hero-badge">🚀 Next-Generation Collaborative Development</div>
-          <h1 className="hero-title">
-            Code Together.<br />
-            <span className="gradient-text">Build Together.</span><br />
-            Ship Together.
-          </h1>
-          <p className="hero-description">
-            The ultimate collaborative code editor with real-time editing, AI-powered assistance, 
-            video calling, and built-in version control. Everything your team needs in one place.
-          </p>
-          <div className="hero-buttons">
-            <button className="btn btn-primary btn-lg">
-              <span>Start Coding Free</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </button>
-            <button className="btn btn-outline btn-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-              <span>Watch Demo</span>
-            </button>
+      <section className="hero" ref={heroRef}>
+        <div className="hero__bg">
+          <div className="hero__gradient"></div>
+          <div className="hero__grid"></div>
+          <div className="hero__glow hero__glow--1"></div>
+          <div className="hero__glow hero__glow--2"></div>
+        </div>
+
+        <div className="hero__container">
+          <div className="hero__content">
+            <div className="hero__badge animate-fade-in-down">
+              <span className="hero__badge-icon">🚀</span>
+              <span>Next-Generation Collaborative Coding</span>
+            </div>
+
+            <h1 className="hero__title animate-fade-in-up delay-100">
+              Code Together.
+              <br />
+              <span className="hero__title-gradient">Build Together.</span>
+              <br />
+              Ship Together.
+            </h1>
+
+            <p className="hero__subtitle animate-fade-in-up delay-200">
+              The all-in-one collaborative code editor with real-time sync,
+              AI-powered intelligence, integrated video communication, and
+              built-in version control. Revolutionize how your team writes code.
+            </p>
+
+            <div className="hero__cta-group animate-fade-in-up delay-300">
+              <a href="#" className="btn btn--primary btn--lg">
+                <span>Start Coding Free</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+              <a href="#" className="btn btn--secondary btn--lg">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+                </svg>
+                <span>Watch Demo</span>
+              </a>
+            </div>
+
+            <div className="hero__stats animate-fade-in-up delay-400">
+              {stats.map((stat, index) => (
+                <div key={index} className="hero__stat">
+                  <span className="hero__stat-value">{stat.value}</span>
+                  <span className="hero__stat-label">{stat.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="hero-stats">
-            <div className="stat">
-              <span className="stat-number">10K+</span>
-              <span className="stat-label">Developers</span>
-            </div>
-            <div className="stat-divider"></div>
-            <div className="stat">
-              <span className="stat-number">50K+</span>
-              <span className="stat-label">Sessions</span>
-            </div>
-            <div className="stat-divider"></div>
-            <div className="stat">
-              <span className="stat-number">99.9%</span>
-              <span className="stat-label">Uptime</span>
+
+          <div className="hero__visual animate-fade-in delay-300">
+            <div className="editor-preview">
+              <div className="editor-preview__header">
+                <div className="editor-preview__dots">
+                  <span className="dot dot--red"></span>
+                  <span className="dot dot--yellow"></span>
+                  <span className="dot dot--green"></span>
+                </div>
+                <div className="editor-preview__title">collabvoice.js</div>
+                <div className="editor-preview__users">
+                  <div className="avatar-stack">
+                    <div className="avatar" style={{ background: 'var(--primary-500)' }}>A</div>
+                    <div className="avatar" style={{ background: 'var(--secondary-500)' }}>B</div>
+                    <div className="avatar" style={{ background: 'var(--accent-500)' }}>C</div>
+                  </div>
+                  <span className="live-indicator">
+                    <span className="live-dot"></span>
+                    Live
+                  </span>
+                </div>
+              </div>
+              <div className="editor-preview__body">
+                <div className="editor-preview__sidebar">
+                  <div className="sidebar-icon active">📁</div>
+                  <div className="sidebar-icon">🔍</div>
+                  <div className="sidebar-icon">🌿</div>
+                  <div className="sidebar-icon">🤖</div>
+                  <div className="sidebar-icon">📹</div>
+                </div>
+                <div className="editor-preview__code">
+                  <pre className="code-block">
+                    <code>{typedText}<span className="cursor">|</span></code>
+                  </pre>
+                  <div className="ai-suggestion">
+                    <span className="ai-suggestion__icon">✨</span>
+                    <span className="ai-suggestion__text">AI: Consider adding error handling for async operations</span>
+                  </div>
+                </div>
+                <div className="editor-preview__panel">
+                  <div className="video-preview">
+                    <div className="video-placeholder">
+                      <span>📹</span>
+                      <span className="video-name">Team Call</span>
+                    </div>
+                  </div>
+                  <div className="chat-preview">
+                    <div className="chat-message">
+                      <span className="chat-user">Sarah:</span>
+                      <span>Looks good! 👍</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="hero-image">
-          <div className="code-editor-preview">
-            <div className="editor-header">
-              <div className="editor-dots">
-                <span className="dot red"></span>
-                <span className="dot yellow"></span>
-                <span className="dot green"></span>
-              </div>
-              <span className="editor-title">main.py - CollabVoice</span>
-              <div className="editor-users">
-                <div className="user-avatar" style={{backgroundColor: '#667eea'}}>A</div>
-                <div className="user-avatar" style={{backgroundColor: '#f56565'}}>B</div>
-                <div className="user-avatar" style={{backgroundColor: '#48bb78'}}>C</div>
-              </div>
-            </div>
-            <div className="editor-content">
-              <pre>
-                <code>
-{`def collaborate():
-    """Real-time collaborative coding"""
-    team = CollabVoice.create_session()
-    
-    # AI-powered suggestions
-    ai_agent = AI.initialize()
-    
-    while team.is_active():
-        code = team.sync_changes()
-        suggestions = ai_agent.analyze(code)
-        
-        if suggestions.has_anomalies():
-            team.notify(suggestions)
-    
-    return team.deploy()`}
-                </code>
-              </pre>
-              <div className="cursor-indicator">
-                <span className="cursor-name">Alice is typing...</span>
-              </div>
-            </div>
+
+        <div className="hero__scroll-indicator">
+          <span>Scroll to explore</span>
+          <div className="scroll-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="features">
-        <div className="section-header">
-          <span className="section-badge">Features</span>
-          <h2 className="section-title">Everything You Need to Build Amazing Software</h2>
-          <p className="section-description">
-            Powerful features designed to enhance your development workflow and team collaboration.
-          </p>
-        </div>
-        <div className="features-grid">
-          <div className="feature-card">
-            <div className="feature-icon" style={{backgroundColor: '#667eea20', color: '#667eea'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-            </div>
-            <h3 className="feature-title">Real-Time Collaboration</h3>
-            <p className="feature-description">
-              Code together with your team in real-time. See cursors, selections, and changes instantly with zero lag.
+      <section className="features" id="features">
+        <div className="features__container">
+          <div className="section-header">
+            <span className="section-tag">Features</span>
+            <h2 className="section-title">
+              Everything You Need to
+              <span className="text-gradient"> Code Smarter</span>
+            </h2>
+            <p className="section-subtitle">
+              A complete development ecosystem that combines collaboration, intelligence,
+              and communication in one powerful platform.
             </p>
           </div>
-          <div className="feature-card">
-            <div className="feature-icon" style={{backgroundColor: '#f5656520', color: '#f56565'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
-                <circle cx="12" cy="12" r="6"></circle>
-                <circle cx="12" cy="12" r="2"></circle>
-              </svg>
-            </div>
-            <h3 className="feature-title">AI-Powered Agents</h3>
-            <p className="feature-description">
-              Intelligent AI assistants analyze your code, detect anomalies, suggest improvements, and help you write better code.
-            </p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon" style={{backgroundColor: '#48bb7820', color: '#48bb78'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-              </svg>
-            </div>
-            <h3 className="feature-title">Video Calling</h3>
-            <p className="feature-description">
-              Built-in HD video conferencing for seamless pair programming and code reviews without switching apps.
-            </p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon" style={{backgroundColor: '#ed8a1920', color: '#ed8a19'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="6" y1="3" x2="6" y2="15"></line>
-                <circle cx="18" cy="6" r="3"></circle>
-                <circle cx="6" cy="18" r="3"></circle>
-                <path d="M18 9a9 9 0 0 1-9 9"></path>
-              </svg>
-            </div>
-            <h3 className="feature-title">Version Control</h3>
-            <p className="feature-description">
-              Integrated Git support and custom versioning system. Branch, merge, and track changes without leaving the editor.
-            </p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon" style={{backgroundColor: '#9f7aea20', color: '#9f7aea'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-              </svg>
-            </div>
-            <h3 className="feature-title">Cloud Storage</h3>
-            <p className="feature-description">
-              Secure, encrypted cloud storage for all your projects. Access your code from anywhere, anytime.
-            </p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon" style={{backgroundColor: '#38b2ac20', color: '#38b2ac'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                <path d="M9 12l2 2 4-4"></path>
-              </svg>
-            </div>
-            <h3 className="feature-title">Anomaly Detection</h3>
-            <p className="feature-description">
-              ML algorithms continuously scan your code for bugs, security vulnerabilities, and performance issues.
-            </p>
+
+          <div className="features__grid">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className={`feature-card ${activeFeature === index ? 'feature-card--active' : ''}`}
+                onMouseEnter={() => setActiveFeature(index)}
+              >
+                <div className="feature-card__icon">
+                  <span>{feature.icon}</span>
+                </div>
+                <h3 className="feature-card__title">{feature.title}</h3>
+                <p className="feature-card__description">{feature.description}</p>
+                <div className="feature-card__highlights">
+                  {feature.highlights.map((highlight, i) => (
+                    <span key={i} className="feature-card__tag">{highlight}</span>
+                  ))}
+                </div>
+                <div className="feature-card__glow"></div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="how-it-works">
-        <div className="section-header">
-          <span className="section-badge">How It Works</span>
-          <h2 className="section-title">Start Collaborating in Minutes</h2>
-          <p className="section-description">
-            Getting started with CollabVoice is simple. Follow these steps to begin.
-          </p>
+      <section className="how-it-works" id="how-it-works">
+        <div className="how-it-works__container">
+          <div className="section-header">
+            <span className="section-tag">How It Works</span>
+            <h2 className="section-title">
+              From Idea to
+              <span className="text-gradient"> Deployment</span> in Minutes
+            </h2>
+            <p className="section-subtitle">
+              Get started in seconds. Our intuitive workflow makes collaborative
+              coding feel natural and effortless.
+            </p>
+          </div>
+
+          <div className="how-it-works__timeline">
+            {howItWorks.map((step, index) => (
+              <div key={index} className="timeline-step">
+                <div className="timeline-step__number">
+                  <span>{step.step}</span>
+                </div>
+                <div className="timeline-step__content">
+                  <h3 className="timeline-step__title">{step.title}</h3>
+                  <p className="timeline-step__description">{step.description}</p>
+                </div>
+                {index < howItWorks.length - 1 && (
+                  <div className="timeline-step__connector"></div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="steps-container">
-          <div className="step">
-            <div className="step-number">1</div>
-            <div className="step-content">
-              <h3>Create a Session</h3>
-              <p>Sign up and create a new collaborative coding session in seconds.</p>
-            </div>
+      </section>
+
+      {/* Use Cases Section */}
+      <section className="use-cases" id="use-cases">
+        <div className="use-cases__container">
+          <div className="section-header">
+            <span className="section-tag">Use Cases</span>
+            <h2 className="section-title">
+              Built for
+              <span className="text-gradient"> Every Team</span>
+            </h2>
+            <p className="section-subtitle">
+              Whether you're a startup, enterprise, or open source project,
+              CollabVoice adapts to your workflow.
+            </p>
           </div>
-          <div className="step-connector"></div>
-          <div className="step">
-            <div className="step-number">2</div>
-            <div className="step-content">
-              <h3>Invite Your Team</h3>
-              <p>Share the session link with your teammates. They can join instantly.</p>
-            </div>
-          </div>
-          <div className="step-connector"></div>
-          <div className="step">
-            <div className="step-number">3</div>
-            <div className="step-content">
-              <h3>Code Together</h3>
-              <p>Write, review, and debug code together in real-time with AI assistance.</p>
-            </div>
-          </div>
-          <div className="step-connector"></div>
-          <div className="step">
-            <div className="step-number">4</div>
-            <div className="step-content">
-              <h3>Ship Faster</h3>
-              <p>Deploy with confidence using built-in version control and testing.</p>
-            </div>
+
+          <div className="use-cases__grid">
+            {useCases.map((useCase, index) => (
+              <div key={index} className="use-case-card">
+                <div className={`use-case-card__icon ${useCase.gradient}`}>
+                  <span>{useCase.icon}</span>
+                </div>
+                <h3 className="use-case-card__title">{useCase.title}</h3>
+                <p className="use-case-card__description">{useCase.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Tech Stack Section */}
-      <section id="tech-stack" className="tech-stack">
-        <div className="section-header">
-          <span className="section-badge">Technology</span>
-          <h2 className="section-title">Built with Modern Technologies</h2>
-          <p className="section-description">
-            Powered by cutting-edge technologies for performance, scalability, and reliability.
-          </p>
-        </div>
-        <div className="tech-grid">
-          <div className="tech-item">
-            <div className="tech-icon">⚛️</div>
-            <span>React</span>
+      <section className="tech-stack" id="tech-stack">
+        <div className="tech-stack__container">
+          <div className="section-header">
+            <span className="section-tag">Technology</span>
+            <h2 className="section-title">
+              Powered by
+              <span className="text-gradient"> Modern Tech</span>
+            </h2>
+            <p className="section-subtitle">
+              Built with cutting-edge technologies for performance,
+              scalability, and an exceptional developer experience.
+            </p>
           </div>
-          <div className="tech-item">
-            <div className="tech-icon">⚡</div>
-            <span>Vite</span>
-          </div>
-          <div className="tech-item">
-            <div className="tech-icon">🐍</div>
-            <span>Python</span>
-          </div>
-          <div className="tech-item">
-            <div className="tech-icon">🌶️</div>
-            <span>Flask</span>
-          </div>
-          <div className="tech-item">
-            <div className="tech-icon">🧠</div>
-            <span>TensorFlow</span>
-          </div>
-          <div className="tech-item">
-            <div className="tech-icon">📹</div>
-            <span>WebRTC</span>
-          </div>
-          <div className="tech-item">
-            <div className="tech-icon">🔌</div>
-            <span>Socket.IO</span>
-          </div>
-          <div className="tech-item">
-            <div className="tech-icon">🐘</div>
-            <span>PostgreSQL</span>
+
+          <div className="tech-stack__grid">
+            {techStack.map((tech, index) => (
+              <div key={index} className="tech-card">
+                <span className="tech-card__icon">{tech.icon}</span>
+                <span className="tech-card__name">{tech.name}</span>
+                <span className="tech-card__category">{tech.category}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="cta">
-        <div className="cta-content">
-          <h2>Ready to Transform Your Development Workflow?</h2>
-          <p>Join thousands of developers who are already collaborating smarter with CollabVoice.</p>
-          <div className="cta-buttons">
-            <button className="btn btn-white btn-lg">Get Started Free</button>
-            <button className="btn btn-outline-white btn-lg">Contact Sales</button>
+      <section className="cta-section">
+        <div className="cta-section__container">
+          <div className="cta-section__bg">
+            <div className="cta-glow cta-glow--1"></div>
+            <div className="cta-glow cta-glow--2"></div>
+          </div>
+          <div className="cta-section__content">
+            <h2 className="cta-section__title">
+              Ready to Transform How Your Team Codes?
+            </h2>
+            <p className="cta-section__subtitle">
+              Join developers worldwide who are building the future together.
+              Start collaborating in real-time today.
+            </p>
+            <div className="cta-section__actions">
+              <a href="https://github.com/ashutosh-engineer/collabvoice" className="btn btn--primary btn--xl">
+                <span>Get Started for Free</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+              <a href="https://github.com/ashutosh-engineer/collabvoice" className="btn btn--ghost btn--xl">
+                <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '20px', height: '20px', marginRight: '8px' }}>
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                <span>View on GitHub</span>
+              </a>
+            </div>
+            <p className="cta-section__note">
+              No credit card required • Free forever for personal use • Enterprise plans available
+            </p>
           </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-main">
-            <div className="footer-brand">
-              <div className="footer-logo">
-                <img src="/logo.jpeg" alt="CollabVoice" className="logo-img" />
-                <span>CollabVoice</span>
-              </div>
-              <p>The next-generation collaborative code editor with AI integration.</p>
-              <div className="social-links">
-                <a href="https://github.com/ashutosh-engineer/collabvoice" target="_blank" rel="noopener noreferrer">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        <div className="footer__container">
+          <div className="footer__top">
+            <div className="footer__brand">
+              <a href="#" className="footer__logo">
+                <img src="/logo.jpeg" alt="CollabVoice" className="footer__logo-img" />
+                <span className="footer__logo-text">CollabVoice</span>
+              </a>
+              <p className="footer__tagline">
+                Code Together. Build Together. Ship Together.
+              </p>
+              <div className="footer__social">
+                <a href="https://github.com/ashutosh-engineer/collabvoice" className="social-link" aria-label="GitHub">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                   </svg>
                 </a>
-                <a href="https://twitter.com/collabvoice" target="_blank" rel="noopener noreferrer">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                  </svg>
-                </a>
-                <a href="https://discord.gg/collabvoice" target="_blank" rel="noopener noreferrer">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+                <a href="https://discord.gg/collabvoice" className="social-link" aria-label="Discord">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" />
                   </svg>
                 </a>
               </div>
             </div>
-            <div className="footer-links">
-              <div className="footer-column">
-                <h4>Product</h4>
-                <a href="#features">Features</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#changelog">Changelog</a>
-                <a href="#roadmap">Roadmap</a>
+
+            <div className="footer__links">
+              <div className="footer__column">
+                <h4 className="footer__column-title">Product</h4>
+                <ul className="footer__list">
+                  <li><a href="#features">Features</a></li>
+                  <li><a href="#">Pricing</a></li>
+                  <li><a href="#">Changelog</a></li>
+                  <li><a href="#">Roadmap</a></li>
+                </ul>
               </div>
-              <div className="footer-column">
-                <h4>Resources</h4>
-                <a href="#docs">Documentation</a>
-                <a href="#api">API Reference</a>
-                <a href="#guides">Guides</a>
-                <a href="#blog">Blog</a>
+              <div className="footer__column">
+                <h4 className="footer__column-title">Resources</h4>
+                <ul className="footer__list">
+                  <li><a href="#">Documentation</a></li>
+                  <li><a href="#">API Reference</a></li>
+                  <li><a href="#">Guides</a></li>
+                  <li><a href="#">Blog</a></li>
+                </ul>
               </div>
-              <div className="footer-column">
-                <h4>Company</h4>
-                <a href="#about">About</a>
-                <a href="#careers">Careers</a>
-                <a href="#contact">Contact</a>
-                <a href="#press">Press</a>
-              </div>
-              <div className="footer-column">
-                <h4>Legal</h4>
-                <a href="#privacy">Privacy</a>
-                <a href="#terms">Terms</a>
-                <a href="#security">Security</a>
+              <div className="footer__column">
+                <h4 className="footer__column-title">Legal</h4>
+                <ul className="footer__list">
+                  <li><a href="#">Privacy Policy</a></li>
+                  <li><a href="#">Terms of Service</a></li>
+                  <li><a href="#">Cookie Policy</a></li>
+                  <li><a href="#">Licenses</a></li>
+                </ul>
               </div>
             </div>
           </div>
-          <div className="footer-bottom">
-            <p>&copy; 2026 CollabVoice. All rights reserved.</p>
-            <p>Built with ❤️ by developers, for developers.</p>
+
+          <div className="footer__bottom">
+            <p className="footer__copyright">
+              © 2026 CollabVoice. All rights reserved. Built with ❤️ by developers, for developers.
+            </p>
+            <p className="footer__made-with">
+              <span>Open Source</span>
+              <span className="separator">•</span>
+              <a href="https://github.com/ashutosh-engineer/collabvoice">MIT License</a>
+            </p>
           </div>
         </div>
       </footer>
