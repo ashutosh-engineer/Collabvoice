@@ -263,6 +263,19 @@ ALLOWED_ORIGINS=http://localhost:3000
 docker-compose up -d
 ```
 
+### 🚀 Production Deployment
+
+#### Render (Backend)
+For deploying the Flask backend on Render, see the detailed guide: **[Backend/RENDER_DEPLOYMENT.md](Backend/RENDER_DEPLOYMENT.md)**
+
+Key points:
+- Python version is pinned to 3.11.9 via `runtime.txt` and `render.yaml`
+- Use the included `render.yaml` Blueprint for Infrastructure as Code deployment
+- Set `PYTHON_VERSION=3.11.9` environment variable if `runtime.txt` is ignored
+
+#### Vercel (Frontend)
+The React frontend can be deployed on Vercel with zero configuration.
+
 ---
 
 ## 📁 Project Structure

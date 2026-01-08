@@ -1,0 +1,26 @@
+# Render Blueprint configuration for CollabVoice Backend
+# This file defines the infrastructure as code for Render deployments
+# Docs: https://docs.render.com/blueprint-spec
+
+services:
+  - type: web
+    name: collabvoice-backend
+    runtime: python
+    # Root directory where the backend code lives
+    rootDir: Backend
+    # Build command - install dependencies
+    buildCommand: pip install -r requirements.txt
+    # Start command - run with gunicorn for production
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    # Environment variables
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: FLASK_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false  # This will prompt for value during deployment
+      - key: SECRET_KEY
+        generateValue: true  # Auto-generate a secure secret
+    # Health check endpoint
+    healthCheckPath: /api/health
