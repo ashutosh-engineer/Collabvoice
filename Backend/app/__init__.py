@@ -20,12 +20,18 @@ def create_app():
     bcrypt.init_app(app)
     
     # CORS Configuration
-    allowed_origins = [
-        "https://collabvoice.vercel.app",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173"
-    ]
-    CORS(app, resources={r"/api/*": {"origins": allowed_origins}}, supports_credentials=True)
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": [
+                "https://collabvoice.vercel.app",
+                "http://localhost:5173",
+                "http://127.0.0.1:5173"
+            ],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
+            "supports_credentials": True
+        }
+    })
     
     migrate = Migrate(app, db)
 
