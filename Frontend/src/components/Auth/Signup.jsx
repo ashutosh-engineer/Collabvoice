@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
-import axios from 'axios';
+import api from '../../api';
 import './Auth.css';
 
 const Signup = () => {
@@ -31,7 +31,7 @@ const Signup = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/register', {
+            const response = await api.post('/auth/register', {
                 username: formData.username,
                 email: formData.email,
                 password: formData.password
