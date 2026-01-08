@@ -2,7 +2,7 @@ import jwt
 import datetime
 import os
 from flask import Blueprint, request, jsonify, make_response
-from models import db, User
+from ..models import db, User
 from email_validator import validate_email, EmailNotValidError
 
 auth_bp = Blueprint('auth', __name__)
@@ -53,7 +53,6 @@ def register():
         'token': token
     }))
     
-    # Set cookie for basic CSRF protection / easier session handling in some setups
     response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
     return response, 201
 
@@ -69,8 +68,6 @@ def login():
     user = User.query.filter_by(email=email).first()
     
     if not user:
-        # User requested: "check if user want to sigin then check it is already signuped or not if not redirect to signup it"
-        # We return a specific code or message that the frontend can use to redirect
         return jsonify({
             'error': 'User not found',
             'suggest_signup': True
@@ -90,11 +87,8 @@ def login():
     response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
     return response, 200
 
-# Placeholder for OAuth (Logic would normally involve redirection)
 @auth_bp.route('/oauth/<provider>', methods=['POST'])
 def oauth_login(provider):
-    # In a real scenario, this would receive the token/code from the provider
-    # For now, we simulate success for the frontend UI integration
     data = request.get_json()
     email = data.get('email')
     
@@ -104,7 +98,6 @@ def oauth_login(provider):
     user = User.query.filter_by(email=email).first()
     
     if not user:
-        # Create user for social login
         username = email.split('@')[0]
         user = User(username=username, email=email)
         db.session.add(user)
