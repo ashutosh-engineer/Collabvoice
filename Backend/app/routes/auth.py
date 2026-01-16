@@ -119,7 +119,13 @@ def register():
         'token': token
     }))
     
-    response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
+    response.set_cookie(
+        'auth_token', 
+        token, 
+        httponly=True, 
+        samesite='None', 
+        secure=True
+    )
     return response, 201
 
 @auth_bp.route('/login', methods=['POST'])
@@ -156,7 +162,7 @@ def login():
         'token': token
     }))
     
-    response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
+    response.set_cookie('auth_token', token, httponly=True, samesite='None', secure=True)
     return response, 200
 
 @auth_bp.route('/oauth/google', methods=['POST'])
@@ -233,7 +239,7 @@ def google_oauth():
         'token': token
     }))
     
-    response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
+    response.set_cookie('auth_token', token, httponly=True, samesite='None', secure=True)
     return response, 200
 
 @auth_bp.route('/oauth/github', methods=['POST'])
@@ -317,7 +323,7 @@ def github_oauth():
         'token': token
     }))
     
-    response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
+    response.set_cookie('auth_token', token, httponly=True, samesite='None', secure=True)
     return response, 200
 
 @auth_bp.route('/verify', methods=['GET'])

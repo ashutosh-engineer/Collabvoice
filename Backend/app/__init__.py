@@ -4,7 +4,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_migrate import Migrate
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, CSRFError
 from .models import db, bcrypt
 
 # Configure logging
@@ -23,6 +23,12 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
+    # Session/Cookie configuration for cross-origin (Vercel -> Render)
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['REMEMBER_COOKIE_SAMESITE'] = 'None'
+    app.config['REMEMBER_COOKIE_SECURE'] = True
 
     # Initialize extensions
     db.init_app(app)
@@ -30,6 +36,14 @@ def create_app():
     
     # Initialize CSRF Protection
     csrf = CSRFProtect(app)
+    
+    @app.errorhandler(CSRFError)
+    def handle_csrf_error(e):
+        logger.error(f"CSRF Error: {e.description}")
+        return jsonify({
+            'error': 'CSRF validation failed',
+            'message': e.description
+        }), 400
     
     # CORS Configuration
     CORS(app, resources={
