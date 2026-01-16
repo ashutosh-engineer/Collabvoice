@@ -11,7 +11,7 @@ services:
     # Build command - install dependencies
     buildCommand: pip install -r requirements.txt
     # Start command - run with gunicorn for production
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT
     # Environment variables
     envVars:
       - key: PYTHON_VERSION
