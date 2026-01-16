@@ -14,11 +14,28 @@ with app.app_context():
         columns = [c['name'] for c in inspector.get_columns('users')]
         
         if 'current_session_id' not in columns:
-            print("🔧 Updating database schema: adding current_session_id to users table...")
+            print("🔧 Updating schema: adding current_session_id...")
             with db.engine.connect() as conn:
                 conn.execute(text('ALTER TABLE users ADD COLUMN current_session_id VARCHAR(255)'))
                 conn.commit()
-            print("✅ Database schema updated successfully")
+        
+        if 'github_id' not in columns:
+            print("🔧 Updating schema: adding github_id...")
+            with db.engine.connect() as conn:
+                conn.execute(text('ALTER TABLE users ADD COLUMN github_id VARCHAR(50) UNIQUE'))
+                conn.commit()
+
+        if 'google_id' not in columns:
+            print("🔧 Updating schema: adding google_id...")
+            with db.engine.connect() as conn:
+                conn.execute(text('ALTER TABLE users ADD COLUMN google_id VARCHAR(50) UNIQUE'))
+                conn.commit()
+
+        if 'avatar_url' not in columns:
+            print("🔧 Updating schema: adding avatar_url...")
+            with db.engine.connect() as conn:
+                conn.execute(text('ALTER TABLE users ADD COLUMN avatar_url VARCHAR(255)'))
+                conn.commit()
         
         print("✅ Database tables initialized successfully")
     except Exception as e:
