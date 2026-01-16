@@ -10,3 +10,4 @@ PyJWT==2.8.0
 email-validator==2.1.0.post1
 flask-migrate==4.0.5
 requests==2.31.0
+flask-wtf==1.2.1

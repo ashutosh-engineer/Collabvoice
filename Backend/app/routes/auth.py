@@ -2,7 +2,10 @@ import jwt
 import datetime
 import os
 import requests
-from flask import Blueprint, request, jsonify, make_response
+import uuid
+from functools import wraps
+from flask import Blueprint, request, jsonify, make_response, current_app
+from flask_wtf.csrf import generate_csrf
 from ..models import db, User
 from email_validator import validate_email, EmailNotValidError
 
@@ -18,13 +21,49 @@ GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID')
 GITHUB_CLIENT_SECRET = os.getenv('GITHUB_CLIENT_SECRET')
 GITHUB_REDIRECT_URI = os.getenv('GITHUB_REDIRECT_URI', 'https://collabvoice.vercel.app/auth/github/callback')
 
-def generate_token(user_id):
+def generate_token(user_id, session_id):
     payload = {
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7),
         'iat': datetime.datetime.utcnow(),
-        'sub': user_id
+        'sub': user_id,
+        'sid': session_id
     }
     return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if 'Authorization' in request.headers:
+            auth_header = request.headers['Authorization']
+            if auth_header.startswith('Bearer '):
+                token = auth_header.split(' ')[1]
+        
+        if not token:
+            return jsonify({'error': 'Token is missing'}), 401
+            
+        try:
+            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+            current_user = User.query.get(data['sub'])
+            
+            if not current_user:
+                return jsonify({'error': 'User not found'}), 401
+                
+            # Session check: Verify if the session ID in the token matches the current one in DB
+            if current_user.current_session_id != data.get('sid'):
+                return jsonify({'error': 'Session expired. Another login detected.'}), 401
+                
+        except jwt.ExpiredSignatureError:
+            return jsonify({'error': 'Token has expired'}), 401
+        except Exception:
+            return jsonify({'error': 'Token is invalid'}), 401
+            
+        return f(current_user, *args, **kwargs)
+    return decorated
+
+@auth_bp.route('/csrf-token', methods=['GET'])
+def get_csrf_token():
+    return jsonify({'csrfToken': generate_csrf()})
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
@@ -51,10 +90,14 @@ def register():
     new_user = User(username=username, email=email)
     new_user.set_password(password)
     
+    # Generate new session ID
+    session_id = str(uuid.uuid4())
+    new_user.current_session_id = session_id
+    
     db.session.add(new_user)
     db.session.commit()
     
-    token = generate_token(new_user.id)
+    token = generate_token(new_user.id, session_id)
     
     response = make_response(jsonify({
         'message': 'Registration successful',
@@ -85,7 +128,12 @@ def login():
     if not user.check_password(password):
         return jsonify({'error': 'Invalid credentials'}), 401
         
-    token = generate_token(user.id)
+    # Generate new session ID and invalidate previous ones
+    session_id = str(uuid.uuid4())
+    user.current_session_id = session_id
+    db.session.commit()
+    
+    token = generate_token(user.id, session_id)
     
     response = make_response(jsonify({
         'message': 'Login successful',
@@ -157,9 +205,12 @@ def google_oauth():
             user.google_id = google_id
         user.avatar_url = picture
         
+    # Generate new session ID for OAuth as well
+    session_id = str(uuid.uuid4())
+    user.current_session_id = session_id
     db.session.commit()
     
-    token = generate_token(user.id)
+    token = generate_token(user.id, session_id)
     
     response = make_response(jsonify({
         'message': 'Logged in via Google',
@@ -238,9 +289,12 @@ def github_oauth():
             user.github_id = github_id
         user.avatar_url = user_info.get('avatar_url')
         
+    # Generate new session ID
+    session_id = str(uuid.uuid4())
+    user.current_session_id = session_id
     db.session.commit()
     
-    token = generate_token(user.id)
+    token = generate_token(user.id, session_id)
     
     response = make_response(jsonify({
         'message': 'Logged in via GitHub',
@@ -250,6 +304,14 @@ def github_oauth():
     
     response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
     return response, 200
+
+@auth_bp.route('/verify', methods=['GET'])
+@token_required
+def verify_token(current_user):
+    return jsonify({
+        'message': 'Token is valid',
+        'user': current_user.to_dict()
+    }), 200
 
 @auth_bp.route('/oauth/<provider>', methods=['POST'])
 def oauth_login(provider):
@@ -266,8 +328,12 @@ def oauth_login(provider):
         user = User(username=username, email=email)
         db.session.add(user)
         db.session.commit()
-        
-    token = generate_token(user.id)
+    
+    session_id = str(uuid.uuid4())
+    user.current_session_id = session_id
+    db.session.commit()
+    
+    token = generate_token(user.id, session_id)
     return jsonify({
         'message': f'Logged in via {provider}',
         'user': user.to_dict(),

@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_migrate import Migrate
+from flask_wtf.csrf import CSRFProtect
 from .models import db, bcrypt
 
 def create_app():
@@ -18,6 +19,11 @@ def create_app():
     # Initialize extensions
     db.init_app(app)
     bcrypt.init_app(app)
+    
+    # Initialize CSRF Protection
+    csrf = CSRFProtect(app)
+    # Enable CSRF only for cookie-based requests (JWT in current case is in JSON/Header usually)
+    # But user asked for it, we will expose a route to get the token
     
     # CORS Configuration
     CORS(app, resources={

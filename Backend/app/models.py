@@ -15,6 +15,7 @@ class User(db.Model):
     github_id = db.Column(db.String(50), unique=True, nullable=True)
     google_id = db.Column(db.String(50), unique=True, nullable=True)
     avatar_url = db.Column(db.String(255), nullable=True)
+    current_session_id = db.Column(db.String(255), nullable=True)  # For single session enforcement
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     def set_password(self, password):
