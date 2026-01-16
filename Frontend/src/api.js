@@ -4,6 +4,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://collabvoice.o
 
 const api = axios.create({
     baseURL: API_BASE_URL,
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -23,7 +24,7 @@ api.interceptors.request.use(async (config) => {
         try {
             // We exclude the csrf-token endpoint itself from this to avoid recursion
             if (!config.url.includes('/auth/csrf-token')) {
-                const csrfRes = await axios.get(`${API_BASE_URL}/auth/csrf-token`);
+                const csrfRes = await axios.get(`${API_BASE_URL}/auth/csrf-token`, { withCredentials: true });
                 config.headers['X-CSRFToken'] = csrfRes.data.csrfToken;
             }
         } catch (e) {
