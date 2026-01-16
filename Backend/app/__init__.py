@@ -34,17 +34,6 @@ def create_app():
     db.init_app(app)
     bcrypt.init_app(app)
     
-    # Initialize CSRF Protection
-    csrf = CSRFProtect(app)
-    
-    @app.errorhandler(CSRFError)
-    def handle_csrf_error(e):
-        logger.error(f"CSRF Error: {e.description}")
-        return jsonify({
-            'error': 'CSRF validation failed',
-            'message': e.description
-        }), 400
-    
     # CORS Configuration
     CORS(app, resources={
         r"/api/*": {
