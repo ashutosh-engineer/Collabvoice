@@ -7,39 +7,31 @@ app = create_app()
 # Initialize database tables and handle schema updates
 with app.app_context():
     try:
-        db.create_all()
+        from sqlalchemy import text
+        
         # Check if current_session_id column exists
-        from sqlalchemy import inspect, text
-        inspector = inspect(db.engine)
-        columns = [c['name'] for c in inspector.get_columns('users')]
+        check_query = text("""
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name='users' AND column_name='current_session_id'
+        """)
         
-        if 'current_session_id' not in columns:
-            print("🔧 Updating schema: adding current_session_id...")
-            with db.engine.connect() as conn:
-                conn.execute(text('ALTER TABLE users ADD COLUMN current_session_id VARCHAR(255)'))
-                conn.commit()
+        result = db.session.execute(check_query).fetchone()
         
-        if 'github_id' not in columns:
-            print("🔧 Updating schema: adding github_id...")
-            with db.engine.connect() as conn:
-                conn.execute(text('ALTER TABLE users ADD COLUMN github_id VARCHAR(50) UNIQUE'))
-                conn.commit()
-
-        if 'google_id' not in columns:
-            print("🔧 Updating schema: adding google_id...")
-            with db.engine.connect() as conn:
-                conn.execute(text('ALTER TABLE users ADD COLUMN google_id VARCHAR(50) UNIQUE'))
-                conn.commit()
-
-        if 'avatar_url' not in columns:
-            print("🔧 Updating schema: adding avatar_url...")
-            with db.engine.connect() as conn:
-                conn.execute(text('ALTER TABLE users ADD COLUMN avatar_url VARCHAR(255)'))
-                conn.commit()
+        if not result:
+            print("🔧 Adding current_session_id column...")
+            alter_query = text("ALTER TABLE users ADD COLUMN current_session_id VARCHAR(255)")
+            db.session.execute(alter_query)
+            db.session.commit()
+            print("✅ current_session_id column added")
         
+        # Create any other missing tables
+        db.create_all()
         print("✅ Database tables initialized successfully")
     except Exception as e:
         print(f"⚠️  Database initialization warning: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     # Local fallback

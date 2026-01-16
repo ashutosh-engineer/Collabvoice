@@ -4,7 +4,6 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_migrate import Migrate
-from flask_wtf.csrf import CSRFProtect, CSRFError
 from .models import db, bcrypt
 
 # Configure logging
