@@ -3,6 +3,7 @@ import datetime
 import os
 import requests
 import uuid
+import logging
 from functools import wraps
 from flask import Blueprint, request, jsonify, make_response, current_app
 from flask_wtf.csrf import generate_csrf
@@ -10,6 +11,7 @@ from ..models import db, User
 from email_validator import validate_email, EmailNotValidError
 
 auth_bp = Blueprint('auth', __name__)
+logger = logging.getLogger(__name__)
 
 SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'your-super-secret-key')
 
@@ -63,11 +65,23 @@ def token_required(f):
 
 @auth_bp.route('/csrf-token', methods=['GET'])
 def get_csrf_token():
-    return jsonify({'csrfToken': generate_csrf()})
+    token = generate_csrf()
+    response = jsonify({'csrfToken': token})
+    # For production Vercel -> Render, we need Samesite=None and Secure=True
+    response.set_cookie(
+        'csrf_token', 
+        token, 
+        samesite='None', 
+        secure=True, 
+        httponly=False # JS needs to read it if using cookie-based CSRF, but we use header
+    )
+    return response
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
+    email = data.get('email')
+    logger.info(f"Registration attempt for: {email}")
     
     username = data.get('username')
     email = data.get('email')
@@ -112,6 +126,7 @@ def register():
 def login():
     data = request.get_json()
     email = data.get('email')
+    logger.info(f"Login attempt for: {email}")
     password = data.get('password')
     
     if not email or not password:

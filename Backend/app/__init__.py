@@ -1,10 +1,18 @@
 import os
+import logging
 from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
 from .models import db, bcrypt
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 def create_app():
     load_dotenv()
@@ -22,8 +30,6 @@ def create_app():
     
     # Initialize CSRF Protection
     csrf = CSRFProtect(app)
-    # Enable CSRF only for cookie-based requests (JWT in current case is in JSON/Header usually)
-    # But user asked for it, we will expose a route to get the token
     
     # CORS Configuration
     CORS(app, resources={
@@ -34,7 +40,16 @@ def create_app():
                 "http://127.0.0.1:5173"
             ],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
+            "allow_headers": [
+                "Content-Type", 
+                "Authorization", 
+                "Access-Control-Allow-Credentials", 
+                "X-CSRFToken", 
+                "x-csrftoken", 
+                "X-Csrftoken",
+                "X-CSRF-TOKEN"
+            ],
+            "expose_headers": ["Content-Type", "Authorization", "X-CSRFToken", "x-csrftoken"],
             "supports_credentials": True
         }
     })
@@ -47,6 +62,7 @@ def create_app():
 
     @app.route("/", methods=['GET'])
     def index():
+        logger.info("Index route accessed")
         return "CollabVoice Backend is LIVE 🚀"
 
     @app.route('/api/health', methods=['GET'])
@@ -56,4 +72,5 @@ def create_app():
             'message': 'CollabVoice Backend is running with Auth enabled!'
         })
 
+    logger.info("Application created successfully")
     return app
