@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
-import api from '../../api';
+import { useAuth } from '../../hooks/useAuth';
+import OAuthButtons from './OAuthButtons';
 import './Auth.css';
 
 const Login = () => {
@@ -10,32 +11,34 @@ const Login = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const { login, isAuthenticated } = useAuth();
+
+    // Redirect if already authenticated
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [isAuthenticated, navigate]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
 
-        try {
-            const response = await api.post('/auth/login', {
-                email,
-                password
-            });
-
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-
+        const result = await login({ email, password });
+        
+        if (result.success) {
             navigate('/dashboard');
-        } catch (err) {
-            if (err.response?.data?.suggest_signup) {
+        } else {
+            if (result.error.includes('User not found')) {
                 setError('User not found. Redirecting to sign up...');
                 setTimeout(() => navigate('/signup'), 2000);
             } else {
-                setError(err.response?.data?.error || 'Failed to login. Please try again.');
+                setError(result.error);
             }
-        } finally {
-            setIsLoading(false);
         }
+        
+        setIsLoading(false);
     };
 
     const handleGoogleLogin = () => {

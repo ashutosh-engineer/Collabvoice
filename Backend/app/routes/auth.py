@@ -272,7 +272,8 @@ def github_oauth():
             'code': code,
             'client_id': GITHUB_CLIENT_ID,
             'client_secret': GITHUB_CLIENT_SECRET,
-            'redirect_uri': GITHUB_REDIRECT_URI
+            'redirect_uri': GITHUB_REDIRECT_URI,
+            'scope': 'user:email repo'  # Request repository access
         }
         
         logger.info(f"Exchanging code with redirect_uri: {GITHUB_REDIRECT_URI}")
@@ -321,7 +322,8 @@ def github_oauth():
                 username=username,
                 email=email,
                 github_id=github_id,
-                avatar_url=user_info.get('avatar_url')
+                avatar_url=user_info.get('avatar_url'),
+                github_access_token=access_token  # Store the access token
             )
             db.session.add(user)
             logger.info(f"Created new user via GitHub OAuth: {email}")
@@ -329,6 +331,7 @@ def github_oauth():
             if not user.github_id:
                 user.github_id = github_id
             user.avatar_url = user_info.get('avatar_url')
+            user.github_access_token = access_token  # Update the access token
             logger.info(f"Updated existing user via GitHub OAuth: {email}")
             
         # Generate new session ID
@@ -357,3 +360,47 @@ def verify_token(current_user):
         'message': 'Token is valid',
         'user': current_user.to_dict()
     }), 200
+
+@auth_bp.route('/logout', methods=['POST'])
+@token_required
+def logout(current_user):
+    """Logout user and invalidate session"""
+    try:
+        # Invalidate current session
+        current_user.current_session_id = None
+        db.session.commit()
+        
+        response = make_response(jsonify({
+            'message': 'Logged out successfully'
+        }))
+        
+        # Clear cookie
+        response.set_cookie('auth_token', '', expires=0, httponly=True, samesite='None', secure=True)
+        return response, 200
+    except Exception as e:
+        logger.error(f"Logout error: {str(e)}")
+        return jsonify({'error': 'Logout failed'}), 500
+
+@auth_bp.route('/sessions/invalidate-others', methods=['POST'])
+@token_required
+def invalidate_other_sessions(current_user):
+    """Invalidate all other sessions for this user"""
+    try:
+        # Generate new session ID, invalidating all others
+        session_id = str(uuid.uuid4())
+        current_user.current_session_id = session_id
+        db.session.commit()
+        
+        # Generate new token
+        new_token = generate_token(current_user.id, session_id)
+        
+        response = make_response(jsonify({
+            'message': 'Other sessions invalidated',
+            'token': new_token
+        }))
+        
+        response.set_cookie('auth_token', new_token, httponly=True, samesite='None', secure=True)
+        return response, 200
+    except Exception as e:
+        logger.error(f"Session invalidation error: {str(e)}")
+        return jsonify({'error': 'Failed to invalidate sessions'}), 500

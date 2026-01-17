@@ -15,6 +15,7 @@ class User(db.Model):
     github_id = db.Column(db.String(50), unique=True, nullable=True)
     google_id = db.Column(db.String(50), unique=True, nullable=True)
     avatar_url = db.Column(db.String(255), nullable=True)
+    github_access_token = db.Column(db.String(255), nullable=True)  # Store GitHub token for repo access
     current_session_id = db.Column(db.String(255), nullable=True)  # For single session enforcement
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
@@ -32,5 +33,6 @@ class User(db.Model):
             'username': self.username,
             'email': self.email,
             'avatar_url': self.avatar_url,
+            'has_github_access': bool(self.github_access_token),
             'created_at': self.created_at.isoformat()
         }

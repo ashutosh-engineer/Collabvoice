@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
-import api from '../../api';
+import { useAuth } from '../../hooks/useAuth';
+import OAuthButtons from './OAuthButtons';
 import './Auth.css';
 
 const Signup = () => {
@@ -14,6 +15,14 @@ const Signup = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const { register, isAuthenticated } = useAuth();
+
+    // Redirect if already authenticated
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [isAuthenticated, navigate]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,22 +39,19 @@ const Signup = () => {
             return;
         }
 
-        try {
-            const response = await api.post('/auth/register', {
-                username: formData.username,
-                email: formData.email,
-                password: formData.password
-            });
+        const result = await register({
+            username: formData.username,
+            email: formData.email,
+            password: formData.password
+        });
 
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-
+        if (result.success) {
             navigate('/dashboard');
-        } catch (err) {
-            setError(err.response?.data?.error || 'Registration failed. Please try again.');
-        } finally {
-            setIsLoading(false);
+        } else {
+            setError(result.error);
         }
+        
+        setIsLoading(false);
     };
 
     const handleGoogleLogin = () => {

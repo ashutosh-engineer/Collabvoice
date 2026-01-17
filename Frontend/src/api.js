@@ -37,4 +37,23 @@ api.interceptors.request.use(async (config) => {
     return Promise.reject(error);
 });
 
+// Response interceptor to handle token expiration
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            // Token expired or invalid
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            
+            // Only redirect if not already on login/signup page
+            const currentPath = window.location.pathname;
+            if (!['/login', '/signup', '/', '/auth/callback'].includes(currentPath)) {
+                window.location.href = '/login';
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default api;
