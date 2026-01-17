@@ -643,8 +643,7 @@ SOFTWARE.
 
 ## 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=ashutosh-engineer/collabvoice&type=Date)](https://star-history.com/#ashutosh-engineer/collabvoice&Date)
-
+[![Star History Chart](https://api.star-history.com/svg?repos=ashutosh-engineer/collabvoice&type=timeline&logscale&legend=bottom-right)](https://www.star-history.com/#ashutosh-engineer/collabvoice&type=timeline&logscale&legend=bottom-right)
 ---
 
 <div align="center">
