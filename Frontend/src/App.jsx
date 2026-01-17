@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './hooks/useAuth';
+import { AuthProvider } from './hooks/useAuth.jsx';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import RedirectIfAuthenticated from './components/Auth/RedirectIfAuthenticated';
 import Landing from './components/Landing/Landing';
